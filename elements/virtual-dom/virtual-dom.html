@@ -1,0 +1,55 @@
+<script src="virtual-dom.js"></script>
+<script src="dom-delegator.js"></script>
+<script src="parse5.js"></script>
+<script src="parse.js"></script>
+<script>
+  var delegator = domDelegator();
+
+  var vd = virtualDom;
+
+  Polymer.VirtualDom = {
+
+    properties: {
+      _ver: {
+        type: Number,
+        observer: 'update'
+      },
+      __state: {
+        type: Object,
+        value: function () { return {}; }
+      },
+      __template: {
+        type: String,
+        value: function () { return "<div></div>"; }
+      }
+    },
+
+    ready: function () {
+      this.initialized = false;
+      this.vd = parse_template(this.__template);
+    },
+
+    attached: function () {
+      this.update();
+    },
+
+    update: function () {
+      var newTree = this.render();
+      if (!this.initialized) {
+        this.tree = newTree;
+        this.rootNode = vd.create(this.tree);
+        this.appendChild(this.rootNode);
+        this.initialized = true;
+      }
+      var patches = vd.diff(this.tree, newTree);
+      this.rootNode = vd.patch(this.rootNode, patches);
+      this.tree = newTree;
+    },
+
+    render: function () {
+      var vd = this.vd(this, this.__state);
+      return vd;
+    }
+
+  };
+</script>

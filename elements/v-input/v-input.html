@@ -1,0 +1,21 @@
+<dom-module is="v-input"></dom-module>
+<script>
+  Polymer({
+
+    is: 'v-input',
+
+    behaviors: [Polymer.VirtualDom],
+
+    properties: {
+      __state: {
+        type: Object,
+        value: function () { return { value: 'x' } }
+      },
+      __template: {
+        type: String,
+        value: '<input type="text" value="{{value}}">'
+      }
+    }
+
+  });
+</script>

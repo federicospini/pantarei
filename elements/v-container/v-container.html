@@ -1,0 +1,26 @@
+<dom-module is="v-container"></dom-module>
+<script>
+  Polymer({
+
+    is: 'v-container',
+
+    behaviors: [Polymer.VirtualDom],
+
+    properties: {
+      __state: {
+        type: Object,
+        value: { items: ['a', 'b', 'c'] }
+      },
+      __template: {
+        type: String,
+        value: '<div class="container"><template repeat="{{items}}"><v-input on-click="on_click_item" type="text" value="{{__item}}"></v-input></template></div>'
+      }
+    },
+
+    on_click_item: function (event) {
+      this.__state.items.push(event.__item);
+      this._ver = this._ver ? this._ver++ : 1;
+    }
+
+  });
+</script>
